@@ -1,0 +1,32 @@
+:root { --bg:#faf8f4; --fg:#1d1b18; --muted:#6b655c; --rule:#e2dccf; --accent:#a3401f; --card:#fff; }
+@media (prefers-color-scheme: dark) {
+  :root { --bg:#16140f; --fg:#ece7dc; --muted:#a09888; --rule:#322e26; --accent:#e58a5f; --card:#1f1c16; }
+}
+* { box-sizing: border-box; }
+body { margin:0; background:var(--bg); color:var(--fg); font:17px/1.6 Georgia, "Iowan Old Style", serif; }
+main { max-width: 42rem; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+nav { font: .85rem -apple-system, sans-serif; margin-bottom: 1.5rem; display:flex; flex-wrap:wrap; gap:.25rem 1rem; }
+a { color: var(--accent); }
+h1 { font-size: 2.4rem; line-height: 1.1; margin: 0 0 .4rem; letter-spacing:-.01em; }
+h2 { font: 600 .8rem/1.2 -apple-system, "Helvetica Neue", sans-serif; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); margin: 2.75rem 0 .75rem; }
+h3 { font: 600 .95rem -apple-system, sans-serif; margin: 2rem 0 .5rem; color: var(--muted); }
+.masthead { border-bottom: 3px double var(--rule); padding-bottom: .75rem; margin-bottom: 1.5rem; }
+.meta { color:var(--muted); font: .85rem -apple-system, sans-serif; }
+.lead { font-size: 1.15rem; border-left: 3px solid var(--accent); padding-left: 1rem; margin: 1.5rem 0; }
+.note { font-size: .95rem; color: var(--muted); }
+.warn { color: var(--accent); }
+.card { background:var(--card); border:1px solid var(--rule); border-radius:8px; padding:.85rem 1.1rem; margin:.75rem 0; }
+.deal.sig { border-left: 4px solid var(--accent); }
+.deal .title { display:block; font-weight:600; line-height:1.35; text-decoration:none; color:var(--fg); }
+.deal .title:hover { color: var(--accent); text-decoration: underline; }
+.facts { font: .82rem/1.5 -apple-system, sans-serif; color: var(--muted); margin-top:.3rem; }
+.tag { display:block; font: 600 .68rem -apple-system, sans-serif; letter-spacing:.06em; text-transform:uppercase; color:var(--accent); margin-bottom:.25rem; }
+.wrap { overflow-x:auto; margin: 1rem 0; }
+table { border-collapse: collapse; width:100%; font: .85rem/1.45 -apple-system, sans-serif; min-width: 26rem; }
+th, td { text-align:left; vertical-align:top; padding:.45rem .6rem; border-bottom:1px solid var(--rule); }
+th { color:var(--muted); font-weight:600; }
+details { margin: 1rem 0; }
+summary { cursor:pointer; font: .9rem -apple-system, sans-serif; color: var(--muted); }
+ul.plain { padding-left: 1.1rem; font-size: .95rem; }
+ul.plain li { margin: .35rem 0; }
+input[type=search] { width:100%; font: 1rem -apple-system, sans-serif; padding:.55rem .75rem; border:1px solid var(--rule); border-radius:8px; background:var(--card); color:var(--fg); margin: .5rem 0 1rem; }

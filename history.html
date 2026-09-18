@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deal history</title>
+<link rel="alternate" type="application/atom+xml" title="Significant deals" href="feed.xml">
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+<main>
+<nav><a href="./">Deals</a><a href="history.html">History</a><a href="brief.html">Brief</a><a href="heuristic.html">Heuristic</a><a href="aggregators.html">Aggregators</a><a href="research/aggregators.csv">CSV</a></nav>
+
+<header class="masthead">
+  <h1>Deal history</h1>
+  <div class="meta" id="count">Loading…</div>
+</header>
+
+<p class="note">Every deal that scored as significant: decent or better against the next-best price, and at least $25 saved. The front page resets every two hours; this list doesn't. Prices are what they were when first seen, and most of these will have expired.</p>
+
+<input type="search" id="q" placeholder="Filter by title or store" aria-label="Filter history">
+<div id="days"></div>
+
+<noscript><p>This page needs JavaScript. The raw data is at <a href="data/history.json">data/history.json</a>.</p></noscript>
+</main>
+
+<script>
+const $ = s => document.querySelector(s);
+const el = (tag, props = {}, kids = []) => {
+  const n = Object.assign(document.createElement(tag), props);
+  kids.forEach(k => n.append(k));
+  return n;
+};
+const usd = n => "$" + (Number.isInteger(n) ? n : n.toFixed(2));
+const day = iso => new Date(iso).toLocaleDateString([], { weekday: "long", year: "numeric", month: "long", day: "numeric" });
+const time = iso => new Date(iso).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+
+let all = [];
+function render() {
+  const q = $("#q").value.trim().toLowerCase();
+  const rows = all.filter(h => !q || (h.title + " " + (h.store || "")).toLowerCase().includes(q));
+  $("#count").textContent = `${rows.length} of ${all.length} significant ${all.length === 1 ? "deal" : "deals"}`;
+  const out = $("#days");
+  out.replaceChildren();
+  let current = null;
+  rows.forEach(h => {
+    const d = day(h.first_seen);
+    if (d !== current) { out.append(el("h3", { textContent: d })); current = d; }
+    const facts = [
+      `${usd(h.price)} vs ${usd(h.reference)} next-best`,
+      `saved ${usd(h.savings)}`,
+      `${Math.round(h.discount * 100)}% adjusted`,
+      h.tier === "act_now" ? "act now" : "decent",
+    ];
+    if (h.store) facts.push(h.store);
+    const seen = h.first_seen === h.last_seen ? `seen ${time(h.first_seen)}` : `first seen ${time(h.first_seen)}, last seen ${day(h.last_seen) === d ? time(h.last_seen) : day(h.last_seen)}`;
+    out.append(el("div", { className: "card deal sig" }, [
+      el("a", { className: "title", href: h.url, textContent: h.title, rel: "noopener" }),
+      el("div", { className: "facts", textContent: facts.join(" · ") }),
+      el("div", { className: "facts", textContent: seen }),
+    ]));
+  });
+  if (!rows.length) out.append(el("p", { className: "note", textContent: all.length ? "No matches." : "No significant deals recorded yet." }));
+}
+
+fetch("data/history.json", { cache: "no-store" }).then(r => r.json()).then(data => {
+  all = data;
+  $("#q").addEventListener("input", render);
+  render();
+}).catch(() => { $("#count").textContent = "Could not load history."; });
+</script>
+</body>
+</html>
