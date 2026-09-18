@@ -1,14 +1,14 @@
 {
- "generated": "2026-09-18T20:56:53+00:00",
+ "generated": "2026-09-18T20:59:04+00:00",
  "refresh_hours": 2,
  "sources": {
   "slickdeals": {
    "ok": true,
-   "fetched": "2026-09-18T20:56:53+00:00"
+   "fetched": "2026-09-18T20:59:04+00:00"
   },
   "tkts": {
    "ok": true,
-   "fetched": "2026-09-18T20:56:53+00:00"
+   "fetched": "2026-09-18T20:59:04+00:00"
   }
  },
  "deals": [
@@ -48,7 +48,7 @@
    "url": "https://slickdeals.net/f/20032545",
    "price": 80.05,
    "store": "Dick's Sporting Goods",
-   "thumbs": 31,
+   "thumbs": 32,
    "posted": "2026-09-18T19:32:49+00:00",
    "savings": 30.76,
    "note": null,
@@ -63,7 +63,7 @@
    "url": "https://slickdeals.net/f/20031585",
    "price": 9.6,
    "store": "Amazon",
-   "thumbs": 15,
+   "thumbs": 16,
    "posted": "2026-09-18T20:28:29+00:00",
    "savings": 15.65,
    "note": null,
@@ -227,7 +227,7 @@
    "title": "Totatuit Women's Crochet Beach Cover Up Dress w/ Pockets $5",
    "url": "https://slickdeals.net/f/20002326",
    "price": 5.0,
-   "store": null,
+   "store": "GRJ-US via Amazon",
    "thumbs": 27,
    "posted": "2026-09-18T20:13:56+00:00",
    "savings": null,
@@ -317,7 +317,7 @@
    "title": "Southwest Airlines Rapid Rewards Members: Earn 2x Points (Register/Book by Sept 21, Fly by Dec 16)",
    "url": "https://slickdeals.net/f/20032617",
    "price": null,
-   "store": "Southwest Airlines",
+   "store": null,
    "thumbs": 38,
    "posted": "2026-09-18T17:54:45+00:00",
    "savings": null,
