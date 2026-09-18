@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deals: where the edge is</title>
+<style>
+  :root { --bg:#faf8f4; --fg:#1d1b18; --muted:#6b655c; --rule:#e2dccf; --accent:#a3401f; --card:#fff; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#16140f; --fg:#ece7dc; --muted:#a09888; --rule:#322e26; --accent:#e58a5f; --card:#1f1c16; }
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:17px/1.6 Georgia, "Iowan Old Style", serif; }
+  main { max-width: 42rem; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+  h1 { font-size: 2rem; line-height: 1.15; margin: 0 0 .5rem; }
+  h2 { font: 600 .8rem/1.2 -apple-system, "Helvetica Neue", sans-serif; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); margin: 2.75rem 0 .75rem; }
+  .meta { color:var(--muted); font: .85rem -apple-system, sans-serif; margin-bottom: 1.5rem; }
+  .lead { font-size: 1.15rem; border-left: 3px solid var(--accent); padding-left: 1rem; margin: 1.5rem 0; }
+  .wrap { overflow-x:auto; margin: 1rem 0; }
+  table { border-collapse: collapse; width:100%; font: .85rem/1.45 -apple-system, sans-serif; min-width: 30rem; }
+  th, td { text-align:left; vertical-align:top; padding:.5rem .6rem; border-bottom:1px solid var(--rule); }
+  th { color:var(--muted); font-weight:600; }
+  .card { background:var(--card); border:1px solid var(--rule); border-radius:8px; padding:1rem 1.1rem; margin:1rem 0; }
+  .tag { font: 600 .7rem -apple-system, sans-serif; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); }
+  code { font: .85em ui-monospace, Menlo, monospace; background:var(--card); border:1px solid var(--rule); padding:.05em .3em; border-radius:4px; }
+  a { color: var(--accent); }
+  li { margin:.35rem 0; }
+  .src li { font: .85rem/1.5 -apple-system, sans-serif; }
+  nav { font: .85rem -apple-system, sans-serif; margin-bottom: 1.5rem; }
+  nav a { margin-right: 1rem; }
+</style>
+</head>
+<body>
+<main>
+<nav><a href="./">Brief</a><a href="heuristic.html">Deal heuristic</a><a href="aggregators.html">Aggregator map</a><a href="research/aggregators.csv">CSV</a></nav>
+<h1>Deals: where the edge actually is</h1>
+<div class="meta">Research brief · 18 Sep 2026 · companion files: <a href="aggregators.html"><code>aggregators.md</code></a>, <a href="research/aggregators.csv"><code>aggregators.csv</code></a>, <a href="heuristic.html"><code>deal-heuristic.md</code></a></div>
+
+<p class="lead">One-line answer: don't build or hunt for one aggregator. Amazon is already solved by price-history trackers, Marketplace and Craigslist are a speed problem you can rent a fix for at $5–10 a month, and the only real gap is NYC tickets, where nobody joins up Theatr, CrowdVolt, DICE, RA, TKTS and rush.</p>
+
+<h2>The read</h2>
+<p>"Best deals across Facebook Marketplace, Craigslist and Amazon" sounds like one problem. It is three, because the price gets set three different ways, and what counts as a good deal changes with it.</p>
+<p>On Amazon the question is whether the discount is real. Usually it isn't. Keepa and CamelCamelCamel answer that for free, and Slickdeals pays editors to check price history before anything hits its front page. There is nothing to add.</p>
+<p>On Marketplace and Craigslist the question is whether you see the listing before someone else does. Facebook's own saved-search alerts are reported to lag by two to four hours. Underpriced goods in New York don't last that long. Cross-site search engines like SearchTempest don't fix this; minute-level alert tools do.</p>
+<p>On tickets the question is what the seat is worth right now, because it's worth zero at curtain. Theatr and CrowdVolt are both good, for different reasons. Theatr caps price at what the seller paid. CrowdVolt lets you post a bid and wait. Neither tells you whether a cheaper route to the same seat exists tonight.</p>
+
+<h2>What is actually going on</h2>
+<div class="wrap"><table>
+<tr><th>Mechanism</th><th>Venues</th><th>Controlling constraint</th><th>Reference price</th><th>Your edge</th></tr>
+<tr><td>Retail with history</td><td>Amazon, open-box, refurb</td><td>Fake anchors</td><td>90-day median and all-time low</td><td>Patience plus an alert</td></tr>
+<tr><td>P2P local</td><td>FB Marketplace, Craigslist, OfferUp, Nextdoor</td><td>Latency, then trust</td><td>eBay sold comps</td><td>Being first with comps already done</td></tr>
+<tr><td>Perishable</td><td>Theatr, CrowdVolt, DICE, RA, TKTS, rush, Gametime</td><td>Time decay vs sell-out risk</td><td>Cheapest listed alternative now</td><td>Standing bids and preset price alerts</td></tr>
+</table></div>
+<p>The hidden structure: every good deal is a gap against a reference price you trust, and every bad deal is a gap against a reference the seller picked. List price, face value and "retails for" are all seller-picked.</p>
+
+<h2>Evidence map</h2>
+<p><span class="tag">Known · source of record</span></p>
+<ul>
+<li>Theatr: listings at or below price paid with proof of purchase, zero seller fee, payment held until 30 minutes after start, 40% of listings sell within 10 minutes, price-point notifications. 4.9 stars on about 5,000 App Store ratings.</li>
+<li>CrowdVolt: StockX-style bid/ask with a public order book; a bid is only charged when filled. Launched January 2024 in New York for EDM, about 3,000 users and 250 events by mid-2024.</li>
+<li>SeatGeek Deal Score compares list price with a modelled fair price built from seat quality and event history. That's the prior art for the ticket heuristic.</li>
+<li>Keepa Pro runs €19–29 a month and its API starts at €49; CamelCamelCamel is free. Slickdeals editors check price history, reviews and stock before Frontpage.</li>
+<li>Meta's terms, from January 2025, ban automated collection logged in or out. There is no Marketplace API.</li>
+<li>FTC junk-fee rule took effect 12 May 2025. Hiding mandatory fees until checkout is now illegal; StubHub paid $10M in April 2026 for continuing it. The rule forces disclosure. It doesn't cap fees.</li>
+</ul>
+<p><span class="tag">Specialist and first-person · suggests</span></p>
+<ul>
+<li>Measured total fee loads: StubHub about 28%, Vivid about 31%, SeatGeek about 37%. TickPick adds none for buyers. These come from fee-comparison sites with their own products to sell.</li>
+<li>Day-of resale prices average 33% below mean, but top-demand events hold about 99% of peak. Weak events drop around 30%.</li>
+<li>Flippers buy at a 30% minimum spread against sold comps, or at half of resale value. A personal buyer's bar sits between.</li>
+<li>BroadwayWorld forum: brokers use Theatr to dump the unsold tail of blocks they marked up elsewhere. Good for you; it means real inventory on weak nights.</li>
+<li>P2P alert tools: Flipify at $5–10 a watchlist with one-minute alerts, Swoopa at $47–352. This table comes from a competitor's blog.</li>
+</ul>
+<p><span class="tag">Critical lane</span></p>
+<ul>
+<li>PCWorld: an SSD shown at 57% off a $1,379 list had never sold above $739.</li>
+<li>Theatr's negative reviews are about frozen seller payouts and one buyer calling fees "very high."</li>
+<li>Marketplace fraud runs through Zelle, deposits and off-platform links. Money sent that way rarely comes back.</li>
+</ul>
+<p><span class="tag">Unknown</span></p>
+<ul>
+<li>Whether CrowdVolt's order books are deep enough outside big Brooklyn nights for bids to fill.</li>
+<li>Live-radar lane (Reddit, X) was not run this pass. No Grok CLI check, and Reddit doesn't fetch well. Treat sentiment claims as thin.</li>
+</ul>
+
+<h2>The heuristic, short form</h2>
+<div class="card">
+<p><strong>Significant = cost far enough below a trusted reference that it survives hassle and risk, on something you already wanted.</strong></p>
+<ol>
+<li>Vetoes first: Zelle or deposit to a stranger, off-platform links, unescrowed tickets, too-cheap phones from new accounts.</li>
+<li>Reference price R: 90-day median (retail), eBay sold comps (P2P), cheapest listed alternative right now (tickets). Never list price, never face value.</li>
+<li>Cost C: price, shipping, travel time at $25 an hour, fix-up. Buyer fees are left out on purpose.</li>
+<li>D = (R − C) / R, cut for weak comps and for the chance of losing the money.</li>
+<li>Act-now bars: retail 20% and at the all-time low. P2P 40%. Tickets 30%, or anything under the alternative on a sold-out show.</li>
+<li>Gates: saves at least $25 and twice your hassle time; was on your list beforehand.</li>
+</ol>
+<p>Full version with eight worked examples is in <a href="heuristic.html"><code>deal-heuristic.md</code></a>. The thresholds are my inference. The structure is borrowed from how SeatGeek, Slickdeals editors and flippers already do it.</p>
+</div>
+
+<h2>Counterargument</h2>
+<p>The best serious objection: for a personal buyer, all of this is more work than it saves. If you buy a handful of things a year, Slickdeals alerts plus TodayTix rush gets you 80% of the value, and a scoring system mostly makes you shop more. The want-list gate is there because of this. If after a month the log shows you buying things that weren't on the list, drop the system and keep the alerts.</p>
+<p>Second objection: Theatr's "below price paid" is already a good enough rule. It isn't, on nights when TKTS or rush has the same show. It is on sold-out shows.</p>
+
+<h2>What I would do</h2>
+<ol>
+<li><strong>Retail:</strong> install Keepa, set drop alerts at your act-now price for the five things you want. Add Slickdeals keyword alerts. Done, free.</li>
+<li><strong>P2P:</strong> one Flipify watchlist for the single category you care most about, comps run in advance. Keep native Craigslist and Nextdoor alerts for the rest. Don't pay Swoopa prices unless you're reselling.</li>
+<li><strong>Tickets:</strong> this is where to spend attention. Theatr price-point alerts per show. Standing CrowdVolt bids at your act-now price. Join DICE and RA waitlists the day a show sells out. Check TKTS and TickPick before accepting any Theatr alert.</li>
+<li><strong>If you build:</strong> build the ticket layer only. A small NYC feed that takes a show or event, pulls the cheapest route across those venues, and scores it. Don't scrape Marketplace; Meta's terms forbid it and the paid tools already carry that risk for you.</li>
+</ol>
+
+<h2>What would change my mind</h2>
+<ul>
+<li>CrowdVolt bids rarely fill below the last sale. Then it's a nicer StubHub, not a source of deals.</li>
+<li>Flipify alerts arrive in tens of minutes, not one. Then the P2P lane needs a different tool or isn't worth paying for.</li>
+<li>Someone already ships the NYC ticket feed. I didn't find one, but I didn't search X or Reddit.</li>
+</ul>
+
+<h2>Next move</h2>
+<p><strong>Time box: 30 minutes this week.</strong> Set three alerts: one Keepa, one Theatr price-point, one CrowdVolt bid. Start the decision log from the bottom of <a href="heuristic.html"><code>deal-heuristic.md</code></a>.</p>
+<p><strong>Success:</strong> three alerts live, first row logged. After 20 rows, tune the thresholds or drop them.</p>
+
+<h2>Source trail</h2>
+<ul class="src">
+<li><strong>Official:</strong> <a href="https://www.theatr-app.com/">Theatr</a> and its <a href="https://apps.apple.com/us/app/theatr-buy-sell-last-min-tix/id1580002886">App Store page</a> (rules, ratings, complaints) · <a href="https://www.crowdvolt.com/help_center/general">CrowdVolt help centre</a> (index only) · <a href="https://support.seatgeek.com/hc/en-us/articles/360007200954-What-is-Deal-Score">SeatGeek Deal Score</a> and <a href="https://chairnerd.seatgeek.com/the-math-behind-ticket-bargains/">the math behind it</a> · <a href="https://slickdeals.net/corp/how-slickdeals-works/">How Slickdeals works</a> · <a href="https://help.cashortrade.org/hc/en-us/articles/12918261373069-Understanding-Fees-on-CashorTrade">CashorTrade fees</a> · <a href="https://tixel.com/how-it-works">Tixel</a> · <a href="https://keepa.com/api-docs/">Keepa API</a></li>
+<li><strong>Specialist / trade:</strong> <a href="https://techcrunch.com/2024/07/16/yc-backed-secondary-ticketing-startup-crowdvolt">TechCrunch on CrowdVolt</a> · <a href="https://www.rollingstone.com/product-recommendations/tickets/how-to-save-on-resale-concert-tickets-buying-guide-1235587202/">Rolling Stone, when to buy resale</a> · <a href="https://gametime.co/blog/the-ins-and-outs-of-pricing-on-gametime/">Gametime pricing</a> · <a href="https://broadwayscorecard.com/guides/cheap-broadway-tickets">Broadway Scorecard</a> · <a href="https://www.retailtouchpoints.com/news/resale-aggregator-platform-beni-debuts-ios-app-adds-poshmark-thredup-and-more/140668/">Beni</a> · <a href="https://revenuegeeks.com/software/keepa/pricing">Keepa pricing</a></li>
+<li><strong>Vendor comparisons (biased, directional):</strong> <a href="https://carsnipe.com/blog/facebook-marketplace-monitoring-tools">CarSnipe on FB monitors</a> · <a href="https://tickethunter.io/compare-ticket-resale-fees">TicketHunter fee table</a> · <a href="https://www.theatr-app.com/post/best-websites-to-resell-tickets">Theatr on seller fees</a> · <a href="https://www.underpriced.app/blog/how-to-use-ebay-sold-listings-price-research-guide">Underpriced on sold comps</a></li>
+<li><strong>First-person:</strong> <a href="https://forum.broadwayworld.com/thread/Theatr-app">BroadwayWorld forum on Theatr</a> · <a href="https://www.cnbc.com/2025/05/13/how-i-lost-money-getting-scammed-on-facebook-marketplace-zelle.html">CNBC, a $500 Marketplace Zelle loss</a></li>
+<li><strong>Critical:</strong> <a href="https://www.pcworld.com/article/3104872/amazon-says-its-a-tech-deal-price-trackers-tell-a-different-story.html">PCWorld on fake Amazon discounts</a> · <a href="https://thunderbit.com/blog/is-scraping-facebook-legal">Meta scraping terms and Bright Data ruling</a> · <a href="https://lifelock.norton.com/learn/fraud/facebook-marketplace-scams">Marketplace scam patterns</a></li>
+</ul>
+</main>
+</body>
+</html>

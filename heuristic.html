@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>When is a deal significant?</title>
+<style>
+  :root { --bg:#faf8f4; --fg:#1d1b18; --muted:#6b655c; --rule:#e2dccf; --accent:#a3401f; --card:#fff; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#16140f; --fg:#ece7dc; --muted:#a09888; --rule:#322e26; --accent:#e58a5f; --card:#1f1c16; }
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:17px/1.6 Georgia, "Iowan Old Style", serif; }
+  main { max-width: 42rem; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+  h1 { font-size: 2rem; line-height: 1.15; margin: 0 0 .5rem; }
+  h2 { font: 600 .8rem/1.2 -apple-system, "Helvetica Neue", sans-serif; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); margin: 2.75rem 0 .75rem; }
+  .meta { color:var(--muted); font: .85rem -apple-system, sans-serif; margin-bottom: 1.5rem; }
+  .lead { font-size: 1.15rem; border-left: 3px solid var(--accent); padding-left: 1rem; margin: 1.5rem 0; }
+  .wrap { overflow-x:auto; margin: 1rem 0; }
+  table { border-collapse: collapse; width:100%; font: .85rem/1.45 -apple-system, sans-serif; min-width: 30rem; }
+  th, td { text-align:left; vertical-align:top; padding:.5rem .6rem; border-bottom:1px solid var(--rule); }
+  th { color:var(--muted); font-weight:600; }
+  .card { background:var(--card); border:1px solid var(--rule); border-radius:8px; padding:1rem 1.1rem; margin:1rem 0; }
+  .tag { font: 600 .7rem -apple-system, sans-serif; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); }
+  code { font: .85em ui-monospace, Menlo, monospace; background:var(--card); border:1px solid var(--rule); padding:.05em .3em; border-radius:4px; }
+  a { color: var(--accent); }
+  li { margin:.35rem 0; }
+  .src li { font: .85rem/1.5 -apple-system, sans-serif; }
+  nav { font: .85rem -apple-system, sans-serif; margin-bottom: 1.5rem; }
+  nav a { margin-right: 1rem; }
+  h3 { font-size: 1.1rem; margin: 1.75rem 0 .5rem; }
+</style>
+</head>
+<body>
+<main>
+<nav><a href="./">Brief</a><a href="heuristic.html">Deal heuristic</a><a href="aggregators.html">Aggregator map</a><a href="research/aggregators.csv">CSV</a></nav>
+<h1>When is a deal significant?</h1>
+<p>One sentence: <strong>a deal is significant when the cost is far enough below a reference price you can trust that it still wins after hassle and the chance it goes wrong, and you wanted the thing before you saw the price.</strong></p>
+<p>The discount a seller shows you is never the reference. Amazon's list price, a ticket's face value, and a Marketplace seller's "retails for $900" are all marketing. PCWorld's example: an SSD shown as 57% off a $1,379 list price had never sold above $739 (Keepa) or $570 (CamelCamelCamel).</p>
+<p>Status of this document: the structure is grounded in how SeatGeek Deal Score, Slickdeals editors, Keepa users and flippers already judge deals. <strong>The numeric thresholds are my inference</strong>, tuned against the worked examples below. Adjust them after 20 logged decisions.</p>
+<h2>Step 0. Vetoes (any one kills it)</h2>
+<ul><li>Payment by Zelle, Cash App, Venmo, PayPal F&amp;F, gift card, wire or crypto to a stranger. Recovery is "very unlikely" (FTC/Meta guidance).</li><li>Any deposit or "holding fee" before you've seen the item.</li><li>Seller moves you off-platform, sends a payment/shipping link, or asks for a verification code.</li><li>Shipped P2P item with no platform buyer protection.</li><li>Ticket sold as a screenshot or PDF outside a platform that escrows payment or does official transfer.</li><li>Price is more than ~60% below comps on a high-theft category (phones, bikes, consoles) with a new seller account. Too cheap is a signal too.</li></ul>
+<h2>Step 1. Pick the reference price R</h2>
+<div class="wrap"><table>
+<tr><th>Mechanism</th><th>R is</th><th>Where to get it</th><th>Never use</th></tr>
+<tr><td>Retail (Amazon, open-box)</td><td>90-day median price of the <em>new</em> item. Also note the all-time low (ATL). For open-box/refurb, R is the new item's ATL, since that's the alternative you'd wait for</td><td>Keepa, CamelCamelCamel</td><td>List price, "was" price</td></tr>
+<tr><td>P2P local (FB, Craigslist, OfferUp)</td><td>Lower of: median of recent eBay <strong>sold</strong> comps in the same condition (incl. shipping), or the best current new/refurb price × 0.8</td><td>eBay sold filter, Reverb Price Guide, StockX history</td><td>Active asking prices, seller's claimed retail</td></tr>
+<tr><td>Tickets</td><td>Cheapest listed price for a comparable seat you could buy right now elsewhere, including primary box office, rush, TKTS</td><td>TickPick, box office, TKTS board, CrowdVolt order book and last sale</td><td>Face value, price the seller paid</td></tr>
+</table></div>
+<p>The ticket row matters most for Theatr. "Below what they paid" is a ceiling on the price, not proof of a deal. If TKTS has the same show at 40% off tonight, a Theatr ticket at 20% below paid is a bad buy.</p>
+<h2>Step 2. Cost C</h2>
+<p>C = price + shipping + travel + expected fix-up</p>
+<p>Buyer fees are left out on purpose. Compare listed prices.</p>
+<ul><li>Travel = round-trip hours × your hourly rate (default $25) + fares/car.</li><li>Fix-up = missing parts, cleaning, battery, etc.</li></ul>
+<h2>Step 3. Net discount, adjusted</h2>
+<p>D = (R − C) / R</p>
+<p>Then two haircuts:</p>
+<p><strong>Confidence in R</strong>, multiply D by:</p>
+<ul><li>1.0: 90+ days of price history, or 8+ sold comps</li><li>0.8: 3–7 comps, or history under 90 days</li><li>0.5: 1–2 comps, or only active listings</li></ul>
+<p><strong>Risk</strong>, subtract p × C / R, where p is the chance you lose the money:</p>
+<ul><li>0–2%: retailer returns, platform escrow (Theatr, CrowdVolt, TickPick)</li><li>5%: in-person, inspected, cash</li><li>15%: in-person, can't fully test (electronics without power, sealed box)</li></ul>
+<h2>Step 4. Tier by mechanism</h2>
+<div class="wrap"><table>
+<tr><th>Tier</th><th>Retail</th><th>P2P local</th><th>Tickets</th></tr>
+<tr><td>Ignore</td><td>D &lt; 10%</td><td>D &lt; 25%</td><td>D &lt; 15%</td></tr>
+<tr><td>Decent (buy if already wanted)</td><td>10–20%</td><td>25–40%</td><td>15–30%</td></tr>
+<tr><td>Act now</td><td>≥ 20% <strong>and</strong> at or below prior ATL</td><td>≥ 40%</td><td>≥ 30%, or any D &gt; 0 on a sold-out show with no rush/lottery</td></tr>
+</table></div>
+<p>Why the bars differ. Retail comes with returns and warranty, so a smaller gap is real money. P2P has no returns, no warranty, and costs you a trip, so the bar is higher; flippers use "30% spread minimum" and "resale ≥ 2× cost" (a 50% discount), and a personal buyer sits between those. Tickets are in between: escrowed but non-returnable.</p>
+<h2>Step 5. Significance gates</h2>
+<p>A tier only counts as <strong>significant</strong> if all three hold:</p>
+<ol><li><strong>Dollar floor.</strong> R − C ≥ max($25, 2 × hours of hassle × hourly rate). Forty percent off a $12 item isn't worth an alert.</li><li><strong>Want-list.</strong> The item or show was on your list before you saw the price. If not, require one tier higher. This is the only defence against deals making you spend more.</li><li><strong>Exit floor (bonus, not required).</strong> If you could resell at ≥ C after fees, the downside is near zero. Bump one tier.</li></ol>
+<h2>Step 6. Time rules for perishables</h2>
+<ul><li>Bottom-quartile-demand events drop ~30% on the day; across all events day-of averages 33% below the mean price. High-demand events hold ~99% of peak on the day. So: <strong>wait on weak shows, don't wait on hot ones.</strong></li><li>Proxy for demand: primary still on sale, or many listings at or below face = weak. Sold out + thin listings = hot.</li><li>On a bid/ask venue (CrowdVolt), place a bid at your "act now" price as soon as you want the event. It costs nothing unless filled. Raise it toward "decent" inside 48 hours.</li><li>On Theatr, 40% of listings sell within 10 minutes. Decide your price per show in advance and set the price-point alert; you won't have time to research when it fires.</li><li>Same for P2P: run comps when you create the alert, not when it fires.</li></ul>
+<h2>Worked examples</h2>
+<p>Prices marked (hyp.) are illustrative; the rest come from sources.</p>
+<ol><li><strong>Amazon SSD, "57% off $1,379"</strong> → price ≈ $593. Trackers show it never sold above $570–739; say 90-day median $600 (hyp.). D = 1%. <strong>Ignore.</strong> The rule correctly rejects a fake discount.</li><li><strong>Amazon headphones</strong> (hyp.): 90-day median $278, ATL $228, now $219. D = 21%, below ATL, history &gt; 90 days. Savings $59 ≥ $25. <strong>Act now</strong> if on the want-list, otherwise decent.</li><li><strong>Best Buy open-box TV</strong> (hyp.): $640 vs $800 street. D = 20%. But open-box normally runs 10–30% off, and ATL for new was $699, so gap to the real alternative is 8%. <strong>Ignore to decent.</strong> Score open-box against the new item's ATL, not its median.</li><li><strong>FB Marketplace Aeron chair, Queens</strong> (hyp.): ask $250. Eight eBay sold comps, median $520. Travel 1.5 h × $25 + $40 car = $77.50. C = $327.50. D = 37%; risk 5% × 327.5/520 = 3%. Net 34%. Savings $192 ≥ $75. <strong>Decent.</strong> Offer $200: C = $277.50, net 44%. <strong>Act now.</strong></li><li><strong>Craigslist iPhone, 65% under comps, "will ship, Zelle only."</strong> <strong>Veto.</strong> Never scored.</li><li><strong>Theatr, show with seats at TKTS</strong> (hyp.): seller paid $189, asks $120. TKTS same section tonight at 30% off = $132. R = $132. D = 9%. <strong>Ignore</strong>, despite being 37% "below face."</li><li><strong>Theatr, sold-out show</strong> (hyp.): same $120 ask; cheapest comparable on TickPick $260. D = 54%, escrowed. <strong>Act now</strong>, and you have about ten minutes.</li><li><strong>CrowdVolt, Brooklyn show 9 days out</strong> (hyp.): primary still selling at $70. Lowest ask $95, last sale $80. R = $70. Buying the ask is D = −36%: <strong>ignore</strong>. Bid $55: D = 21% if filled. <strong>Place the bid</strong>; if primary sells out, R resets to the lowest ask elsewhere and you re-score.</li></ol>
+<h2>What to log (so the thresholds can be tuned)</h2>
+<p>Per decision: date, venue, item, R and its source, C, D, tier, bought y/n, and one week later: regret y/n. Twenty rows is enough to see if a bar is too high or too low.</p>
+<p class="meta">Raw file: <a href="research/deal-heuristic.md">research/deal-heuristic.md</a></p>
+</main>
+</body>
+</html>

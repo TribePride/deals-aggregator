@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aggregator and venue map</title>
+<style>
+  :root { --bg:#faf8f4; --fg:#1d1b18; --muted:#6b655c; --rule:#e2dccf; --accent:#a3401f; --card:#fff; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#16140f; --fg:#ece7dc; --muted:#a09888; --rule:#322e26; --accent:#e58a5f; --card:#1f1c16; }
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:17px/1.6 Georgia, "Iowan Old Style", serif; }
+  main { max-width: 42rem; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+  h1 { font-size: 2rem; line-height: 1.15; margin: 0 0 .5rem; }
+  h2 { font: 600 .8rem/1.2 -apple-system, "Helvetica Neue", sans-serif; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); margin: 2.75rem 0 .75rem; }
+  .meta { color:var(--muted); font: .85rem -apple-system, sans-serif; margin-bottom: 1.5rem; }
+  .lead { font-size: 1.15rem; border-left: 3px solid var(--accent); padding-left: 1rem; margin: 1.5rem 0; }
+  .wrap { overflow-x:auto; margin: 1rem 0; }
+  table { border-collapse: collapse; width:100%; font: .85rem/1.45 -apple-system, sans-serif; min-width: 30rem; }
+  th, td { text-align:left; vertical-align:top; padding:.5rem .6rem; border-bottom:1px solid var(--rule); }
+  th { color:var(--muted); font-weight:600; }
+  .card { background:var(--card); border:1px solid var(--rule); border-radius:8px; padding:1rem 1.1rem; margin:1rem 0; }
+  .tag { font: 600 .7rem -apple-system, sans-serif; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); }
+  code { font: .85em ui-monospace, Menlo, monospace; background:var(--card); border:1px solid var(--rule); padding:.05em .3em; border-radius:4px; }
+  a { color: var(--accent); }
+  li { margin:.35rem 0; }
+  .src li { font: .85rem/1.5 -apple-system, sans-serif; }
+  nav { font: .85rem -apple-system, sans-serif; margin-bottom: 1.5rem; }
+  nav a { margin-right: 1rem; }
+  h3 { font-size: 1.1rem; margin: 1.75rem 0 .5rem; }
+</style>
+</head>
+<body>
+<main>
+<nav><a href="./">Brief</a><a href="heuristic.html">Deal heuristic</a><a href="aggregators.html">Aggregator map</a><a href="research/aggregators.csv">CSV</a></nav>
+<h1>Aggregator and venue map</h1>
+<p>Researched 2026-09-18. Full machine-readable table: <a href="research/aggregators.csv"><code>aggregators.csv</code></a> (51 rows, with an <code>evidence</code> column: <code>fetched</code>, <code>search-snippet</code>, or <code>background</code> = my prior knowledge, not re-verified this pass).</p>
+<p>The list is grouped by how the price gets set, because that decides what "a deal" means there. See <a href="heuristic.html"><code>deal-heuristic.md</code></a>.</p>
+<h2>1. Retail with price history (Amazon and friends)</h2>
+<p>There is no single aggregator to build here. It already exists, and it's good.</p>
+<div class="wrap"><table>
+<tr><th>Tool</th><th>Job</th><th>Cost</th><th>Verdict</th></tr>
+<tr><td><strong>Keepa</strong></td><td>Amazon price, Buy Box and Warehouse price history; drop alerts</td><td>Free tier; Pro ~€19–29/mo; API from €49/mo</td><td>Use. The reference-price source for anything on Amazon</td></tr>
+<tr><td><strong>CamelCamelCamel</strong></td><td>Same idea, simpler; email alerts</td><td>Free</td><td>Use as a second opinion. The two trackers disagree sometimes (PCWorld found highs of $739 vs $570 on one SSD)</td></tr>
+<tr><td><strong>Slickdeals</strong></td><td>Humans vote, then paid Deal Editors check price history before Frontpage</td><td>Free; keyword alerts; RSS</td><td>Use. Frontpage is the closest thing to a pre-scored feed</td></tr>
+<tr><td>PCPartPicker</td><td>Price history for PC parts across retailers</td><td>Free</td><td>Use for that category</td></tr>
+<tr><td>Amazon Resale, Woot, Best Buy Open-Box, Back Market, eBay Refurbished, Newegg Open Box</td><td>Open-box (typically 10–30% off) and refurb (20–50% off)</td><td>n/a</td><td>Use, but score against street price, not MSRP</td></tr>
+</table></div>
+<h2>2. Peer-to-peer local (FB Marketplace, Craigslist, OfferUp)</h2>
+<p>Two different tool types get lumped together as "aggregators":</p>
+<p><strong>Meta-search</strong> (search many sites once): SearchTempest is the one worth keeping. AllCraigslistSearch and Claz duplicate it. These help when you'll drive for something rare. They don't help in NYC for common goods, because the good listings are gone before you search.</p>
+<p><strong>Alert monitors</strong> (tell you within minutes): this is where the value is.</p>
+<div class="wrap"><table>
+<tr><th>Tool</th><th>Platforms</th><th>Alert speed</th><th>Price</th><th>Verdict</th></tr>
+<tr><td>FB saved searches (native)</td><td>FB</td><td>2–4 hours reported</td><td>Free</td><td>Baseline. Too slow for contested items</td></tr>
+<tr><td>Craigslist saved searches (native)</td><td>CL</td><td>Email, periodic</td><td>Free</td><td>Use</td></tr>
+<tr><td><strong>Flipify</strong></td><td>FB, CL, eBay, OfferUp, Vinted, Kijiji</td><td>1 min (premium)</td><td>$5–10 per watchlist/mo</td><td>Try first. Newer, unproven</td></tr>
+<tr><td>Scout</td><td>FB (Apple only)</td><td>Hourly to instant</td><td>$2.99–7.99/mo</td><td>Cheap alternative</td></tr>
+<tr><td>Swoopa</td><td>FB, CL, OfferUp, eBay</td><td>5–9 min advertised</td><td>$47–352/mo</td><td>Skip unless flipping</td></tr>
+<tr><td>Marketplace Monitor</td><td>FB, CL, OfferUp, eBay, Depop, Vinted</td><td>2–5 min</td><td>$24.99–169.99/mo</td><td>Skip on price</td></tr>
+<tr><td>CarSnipe</td><td>FB, cars</td><td>3–15 min</td><td>$9.99–24.99/mo</td><td>Cars only</td></tr>
+</table></div>
+<p>Caveat: the speed and price table comes from CarSnipe's own blog, a competitor of everything else in it. Treat as directional.</p>
+<p><strong>Reference price source:</strong> eBay sold listings. Every P2P deal gets scored against sold comps, not active asks.</p>
+<p>Other venues: Nextdoor, Buy Nothing, Trash Nothing (free stuff, high NYC relevance), EstateSales.net, HiBid/GovDeals/ShopGoodwill (watch the 10–18% buyer premium).</p>
+<h2>3. Tickets (perishable inventory)</h2>
+<p><strong>Broadway, cheapest first:</strong> lotteries ($30–60, low odds on hits) → box-office or TodayTix rush ($30–50) → TDF membership ($11–62.50, if eligible) → TKTS (20–50% off, same day) → <strong>Theatr</strong> (at or below what the seller paid) → TickPick/StubHub/SeatGeek all-in.</p>
+<div class="wrap"><table>
+<tr><th>Venue</th><th>Mechanism</th><th>Fees</th><th>Notes</th></tr>
+<tr><td><strong>Theatr</strong></td><td>Resale capped at price paid, proof of purchase, escrow until 30 min after curtain</td><td>Seller $0. <strong>Buyer fee not published anywhere I could fetch</strong>; one App Store review calls it "very high"</td><td>40% of listings sell inside 10 minutes. Price-point push alerts. Brokers also dump unsold blocks here</td></tr>
+<tr><td><strong>CrowdVolt</strong></td><td>Bid/ask exchange, public order book, bid charged only on fill</td><td><strong>Not retrievable</strong> (help centre answers load client-side)</td><td>EDM/rave, NYC first. A standing bid is a free option</td></tr>
+<tr><td>DICE Waitlist, RA resale</td><td>Official face-value return queues</td><td>Face + original fees</td><td>Best price you'll get for sold-out Brooklyn shows; join early</td></tr>
+<tr><td>CashorTrade</td><td>Face value only</td><td>Buyer 10% + 3% card; seller $0</td><td>Jam/festival heavy</td></tr>
+<tr><td>Tixel</td><td>Capped at +20% (US)</td><td>Unverified</td><td>US launch June 2025. Watch</td></tr>
+<tr><td>TickPick</td><td>No added buyer fee</td><td>Seller 15%</td><td>Use as the honest all-in reference</td></tr>
+<tr><td>SeatGeek</td><td>Deal Score: list price vs modelled fair price</td><td>~37% measured total fee load</td><td>Use the score, check all-in elsewhere</td></tr>
+<tr><td>StubHub / Vivid</td><td>Biggest inventory</td><td>~28% / ~31% measured</td><td>All-in display required since May 2025 FTC rule; StubHub paid $10M in April 2026 for not complying</td></tr>
+<tr><td>Gametime</td><td>Last-minute, sells until 90 min after start</td><td>In price</td><td>Its own example: NBA median $127 at T−48h, $40 after tipoff</td></tr>
+</table></div>
+<h2>4. Fashion and gear resale</h2>
+<p>Aggregators exist and work: <strong>Beni</strong> (50+ partners, claims ~80% of online resale listings, alerts), <strong>Gem</strong>, <strong>Phia</strong>. StockX/GOAT give public sale history, which is a real reference price. Reverb publishes a Price Guide for music gear.</p>
+<h2>5. Other perishables</h2>
+<p>Too Good To Go (food), HotelTonight (rooms), Going (flights). Same decay logic as tickets.</p>
+<h2>What's missing from the market</h2>
+<p>Nobody scores deals <em>across</em> these mechanisms, and nobody covers the NYC-specific ticket venues (Theatr, CrowdVolt, DICE waitlist, RA resale, TKTS board, rush) in one feed. Retail is solved. P2P alerting is solved if you pay. The ticket layer is the open gap.</p>
+<p class="meta">Raw file: <a href="research/aggregators.md">research/aggregators.md</a></p>
+</main>
+</body>
+</html>
