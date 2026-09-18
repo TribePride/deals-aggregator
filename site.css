@@ -30,3 +30,11 @@ summary { cursor:pointer; font: .9rem -apple-system, sans-serif; color: var(--mu
 ul.plain { padding-left: 1.1rem; font-size: .95rem; }
 ul.plain li { margin: .35rem 0; }
 input[type=search] { width:100%; font: 1rem -apple-system, sans-serif; padding:.55rem .75rem; border:1px solid var(--rule); border-radius:8px; background:var(--card); color:var(--fg); margin: .5rem 0 1rem; }
+.deal { display:flex; gap:.9rem; align-items:flex-start; }
+.deal .body { flex:1; min-width:0; }
+.thumb { width:88px; height:88px; flex:none; object-fit:contain; background:#fff; border:1px solid var(--rule); border-radius:6px; }
+.thumb.empty { background:var(--bg); }
+.deal.small .thumb { width:56px; height:56px; }
+.deal.small .title { font-weight:400; font-size:.95rem; }
+.blurb { margin:.3rem 0 0; font-size:.92rem; line-height:1.45; color:var(--fg); opacity:.85; }
+@media (max-width: 26rem) { .thumb { width:64px; height:64px; } }

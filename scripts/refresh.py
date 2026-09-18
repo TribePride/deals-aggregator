@@ -49,6 +49,18 @@ def strip_tags(s):
     return re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", s))).strip()
 
 
+def blurb(desc, limit=170):
+    """Short plain description from the RSS summary: no URLs, no markup."""
+    t = re.sub(r"https?://\S+", "", desc).replace("*", "")
+    t = re.sub(r"\s*\[[^\]]*\]", "", t)  # "[walmart.com]"
+    t = re.sub(r"^.{2,60}? (?:has|have|is offering|offers) ", "", t)  # store is shown separately
+    t = t[:1].upper() + t[1:]
+    t = re.sub(r"\s+", " ", t).strip(" .")
+    if len(t) > limit:
+        t = t[:limit].rsplit(" ", 1)[0].rstrip(",;:") + "…"
+    return t or None
+
+
 def money(s):
     return float(s.replace(",", ""))
 
@@ -67,6 +79,7 @@ def parse_rss(xml_text):
             continue
         desc = strip_tags(it.findtext("description") or "")
         body = it.findtext("content:encoded", default="", namespaces=ns)
+        img = re.search(r'<img[^>]+src="(https://[^"]+)"', body)
         thumbs = re.search(r"Thumb Score:\s*\+?(-?\d+)", body)
         # "$49+" is a free-shipping threshold, not the price
         prices = re.findall(r"\$\s?(\d[\d,]*(?:\.\d+)?)(?!\+|[\d,.]*\d\+)", title)
@@ -83,6 +96,8 @@ def parse_rss(xml_text):
             "store": re.sub(r"\s*\[[^\]]*\]", "", store.group(1)).strip() if store else None,
             "thumbs": int(thumbs.group(1)) if thumbs else None,
             "posted": posted,
+            "image": img.group(1) if img else None,
+            "blurb": blurb(desc),
         })
     return items
 
@@ -219,7 +234,7 @@ def update_history(history, deals, now):
     for d in deals:
         if not d["significant"]:
             continue
-        keep = {k: d[k] for k in ("id", "title", "url", "store", "price", "reference", "savings", "discount", "tier", "thumbs")}
+        keep = {k: d[k] for k in ("id", "title", "url", "store", "price", "reference", "savings", "discount", "tier", "thumbs", "image", "blurb")}
         if d["id"] in by_id:
             by_id[d["id"]].update(keep, last_seen=now)
         else:

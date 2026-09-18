@@ -54,11 +54,14 @@ function render() {
     ];
     if (h.store) facts.push(h.store);
     const seen = h.first_seen === h.last_seen ? `seen ${time(h.first_seen)}` : `first seen ${time(h.first_seen)}, last seen ${day(h.last_seen) === d ? time(h.last_seen) : day(h.last_seen)}`;
-    out.append(el("div", { className: "card deal sig" }, [
+    const img = h.image ? el("img", { className: "thumb", src: h.image, alt: "", loading: "lazy", referrerPolicy: "no-referrer" }) : el("div", { className: "thumb empty" });
+    if (h.image) img.onerror = () => img.replaceWith(el("div", { className: "thumb empty" }));
+    out.append(el("div", { className: "card deal sig" }, [img, el("div", { className: "body" }, [
       el("a", { className: "title", href: h.url, textContent: h.title, rel: "noopener" }),
+      ...(h.blurb ? [el("p", { className: "blurb", textContent: h.blurb })] : []),
       el("div", { className: "facts", textContent: facts.join(" · ") }),
       el("div", { className: "facts", textContent: seen }),
-    ]));
+    ])]));
   });
   if (!rows.length) out.append(el("p", { className: "note", textContent: all.length ? "No matches." : "No significant deals recorded yet." }));
 }

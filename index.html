@@ -32,7 +32,7 @@
 
 <section id="rest" hidden>
   <h2>Also seen</h2>
-  <details><summary id="rest-summary"></summary><ul id="rest-list" class="plain"></ul></details>
+  <details><summary id="rest-summary"></summary><div id="rest-list"></div></details>
 </section>
 
 <h2>How this is scored</h2>
@@ -54,6 +54,13 @@ const usd = n => n == null ? "" : "$" + (Number.isInteger(n) ? n : n.toFixed(2))
 const when = iso => new Date(iso).toLocaleString([], { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
 const clock = d => d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
 
+function thumb(d) {
+  if (!d.image) return el("div", { className: "thumb empty" });
+  const img = el("img", { className: "thumb", src: d.image, alt: "", loading: "lazy", referrerPolicy: "no-referrer" });
+  img.onerror = () => img.replaceWith(el("div", { className: "thumb empty" }));
+  return img;
+}
+
 function card(d) {
   const facts = [
     `${usd(d.price)} vs ${usd(d.reference)} next-best`,
@@ -62,14 +69,13 @@ function card(d) {
   ];
   if (d.store) facts.push(d.store);
   if (d.thumbs != null) facts.push(`+${d.thumbs} votes`);
-  const kids = [
-    el("a", { className: "title", href: d.url, textContent: d.title, rel: "noopener" }),
-    el("div", { className: "facts", textContent: facts.join(" · ") }),
-  ];
+  const kids = [];
+  if (d.significant) kids.push(el("span", { className: "tag", textContent: "Significant" }));
+  kids.push(el("a", { className: "title", href: d.url, textContent: d.title, rel: "noopener" }));
+  if (d.blurb) kids.push(el("p", { className: "blurb", textContent: d.blurb }));
+  kids.push(el("div", { className: "facts", textContent: facts.join(" · ") }));
   if (d.note) kids.push(el("div", { className: "facts", textContent: d.note + "." }));
-  const c = el("div", { className: "card deal" + (d.significant ? " sig" : "") }, kids);
-  if (d.significant) c.prepend(el("span", { className: "tag", textContent: "Significant" }));
-  return c;
+  return el("div", { className: "card deal" + (d.significant ? " sig" : "") }, [thumb(d), el("div", { className: "body" }, kids)]);
 }
 
 function tktsRows(table, rows) {
@@ -122,10 +128,11 @@ fetch("data/current.json", { cache: "no-store" }).then(r => r.json()).then(data 
   if (rest.length) {
     $("#rest").hidden = false;
     $("#rest-summary").textContent = `${rest.length} more: below the bar, or no price research to score against`;
-    rest.forEach(d => $("#rest-list").append(el("li", {}, [
-      el("a", { href: d.url, textContent: d.title, rel: "noopener" }),
-      el("span", { className: "facts", textContent: d.tier === "ignore" ? ` · ${Math.round(d.discount * 100)}% adjusted, ignore` : " · unscored" }),
-    ])));
+    rest.forEach(d => $("#rest-list").append(el("div", { className: "card deal small" }, [thumb(d), el("div", { className: "body" }, [
+      el("a", { className: "title", href: d.url, textContent: d.title, rel: "noopener" }),
+      ...(d.blurb ? [el("p", { className: "blurb", textContent: d.blurb })] : []),
+      el("div", { className: "facts", textContent: d.tier === "ignore" ? `${Math.round(d.discount * 100)}% adjusted · below the bar` : "Unscored · no price research" }),
+    ])])));
   }
 
   const t = data.tkts || {};
